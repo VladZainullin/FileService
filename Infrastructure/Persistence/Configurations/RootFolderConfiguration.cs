@@ -16,9 +16,5 @@ internal sealed class RootFolderConfiguration : IEntityTypeConfiguration<RootFol
     public void Configure(EntityTypeBuilder<RootFolder> builder)
     {
         builder.HasData(_folder);
-
-        builder
-            .HasMany(f => f.Children)
-            .WithOne(r => (RootFolder)r.Parent);
     }
 }
