@@ -17,11 +17,23 @@ internal sealed class RootFolder : Folder
 
     public static RootFolder CreateInstance(RootFolderOptions rootFolderOptions)
     {
-        return _rootFolder ??= new RootFolder
+        try
         {
-            _title = rootFolderOptions.Path,
-            Id = rootFolderOptions.Id,
-            ParentId = rootFolderOptions.Id
-        };
+            _rootFolder ??= new RootFolder
+            {
+                _title = rootFolderOptions.Path,
+                Id = rootFolderOptions.Id,
+                ParentId = rootFolderOptions.Id
+            };
+
+            Directory.CreateDirectory(rootFolderOptions.Path);
+
+            return _rootFolder;
+        }
+        catch
+        {
+            if (!Directory.Exists(rootFolderOptions.Path)) Directory.Delete(rootFolderOptions.Path);
+            throw;
+        }
     }
 }
