@@ -21,7 +21,7 @@ internal sealed class RootFolder : Folder
         {
             _rootFolder ??= new RootFolder
             {
-                _title = rootFolderOptions.Path,
+                Title = rootFolderOptions.Path,
                 Id = rootFolderOptions.Id,
                 ParentId = rootFolderOptions.Id
             };
