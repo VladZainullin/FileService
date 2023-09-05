@@ -29,5 +29,5 @@ public abstract class Resource
     public Guid ParentId { get; protected set; }
     public Resource Parent { get; private set; } = default!;
 
-    public string Route => ReferenceEquals(Parent, this) ? Title : Parent.Route + '/';
+    public virtual string Route => Path.Combine(Parent.Route, Title);
 }

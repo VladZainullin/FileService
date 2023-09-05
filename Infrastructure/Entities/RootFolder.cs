@@ -36,4 +36,6 @@ internal sealed class RootFolder : Folder
             throw;
         }
     }
+
+    public override string Route => Title;
 }
