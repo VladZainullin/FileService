@@ -1,4 +1,6 @@
 using System.Reflection;
+using Application.Common.Interfaces;
+using Domain.Entities;
 using Infrastructure.Options;
 using Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Persistence;
 
-internal sealed class AppDbContext : DbContext
+internal sealed class AppDbContext : DbContext, IAppDbContext
 {
     private readonly IOptionsSnapshot<ConnectionStringsOptions> _connectionStringsOptions;
     private readonly RootFolderConfiguration _rootFolderConfiguration;
@@ -33,4 +35,6 @@ internal sealed class AppDbContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
+
+    public DbSet<Resource> Resources => Set<Resource>();
 }
