@@ -49,7 +49,8 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>();
 
         services.AddScoped<IAppDbContext>(s => s.GetRequiredService<AppDbContext>());
-
+        services.AddScoped<ITransactionExecutor>(s => s.GetRequiredService<AppDbContext>());
+        
         return services;
     }
 }
