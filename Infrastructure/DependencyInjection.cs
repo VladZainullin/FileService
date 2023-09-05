@@ -1,3 +1,4 @@
+using Application.Common.Interfaces;
 using Infrastructure.Entities;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
@@ -45,8 +46,9 @@ public static class DependencyInjection
     private static IServiceCollection ConfigureDbContext(this IServiceCollection services)
     {
         services.AddTransient<RootFolderConfiguration>();
-
         services.AddDbContext<AppDbContext>();
+
+        services.AddScoped<IAppDbContext>(s => s.GetRequiredService<AppDbContext>());
 
         return services;
     }
