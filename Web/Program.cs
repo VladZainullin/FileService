@@ -1,6 +1,7 @@
 using Application;
 using Infrastructure;
 using Web;
+using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services
     .AddWebServices();
 
 var app = builder.Build();
+
+app.UseMiddleware<TransactionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
