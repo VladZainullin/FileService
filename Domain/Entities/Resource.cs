@@ -14,7 +14,7 @@ public abstract class Resource
         Id = Guid.NewGuid();
     }
 
-    protected Resource(string title, Folder parent) : this()
+    protected Resource(string title, Resource parent) : this()
     {
         Title = title;
         Parent = parent;

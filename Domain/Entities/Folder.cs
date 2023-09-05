@@ -6,7 +6,7 @@ public class Folder : Resource
     {
     }
 
-    protected Folder(string title, Folder parent) : base(title, parent)
+    public Folder(string title, Resource parent) : base(title, parent)
     {
     }
 
