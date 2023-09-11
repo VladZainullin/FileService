@@ -8,17 +8,19 @@ namespace Application.Features.Folders.Commands.CreateFolder;
 file sealed class CreateFolderHandler : IRequestHandler<CreateFolderCommand>
 {
     private readonly IAppDbContext _context;
+    private readonly IResourceFactory _resourceFactory;
 
-    public CreateFolderHandler(IAppDbContext context)
+    public CreateFolderHandler(IAppDbContext context, IResourceFactory resourceFactory)
     {
         _context = context;
+        _resourceFactory = resourceFactory;
     }
 
     public async Task Handle(CreateFolderCommand request, CancellationToken cancellationToken)
     {
         var parent = await GetResourceAsync(request.Dto.ParentId, cancellationToken);
 
-        var folder = new Folder(request.Dto.Title, parent);
+        var folder = _resourceFactory.CreateFolder(request.Dto.Title, parent);
 
         await _context.Resources.AddAsync(folder, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

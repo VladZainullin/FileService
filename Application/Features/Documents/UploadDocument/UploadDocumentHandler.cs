@@ -8,10 +8,12 @@ namespace Application.Features.Documents.UploadDocument;
 public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentCommand>
 {
     private readonly IAppDbContext _context;
+    private readonly IResourceFactory _resourceFactory;
 
-    public UploadDocumentHandler(IAppDbContext context)
+    public UploadDocumentHandler(IAppDbContext context, IResourceFactory resourceFactory)
     {
         _context = context;
+        _resourceFactory = resourceFactory;
     }
 
     public async Task Handle(
@@ -20,7 +22,7 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentComman
     {
         var parent = await GetResourceAsync(request, cancellationToken);
 
-        var document = await Document.CreateInstance(request.Dto.File, parent);
+        var document = await _resourceFactory.CreateDocumentAsync(request.Dto.File, parent, cancellationToken);
 
         await _context.Resources.AddAsync(document, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

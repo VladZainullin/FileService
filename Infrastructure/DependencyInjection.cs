@@ -1,5 +1,6 @@
 using Application.Common.Interfaces;
 using Infrastructure.Entities;
+using Infrastructure.Factories;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Configurations;
@@ -16,6 +17,7 @@ public static class DependencyInjection
     {
         return services
             .ConfigureOptions(configuration)
+            .ConfigureServices()
             .ConfigureRootFolder()
             .ConfigureDbContext();
     }
@@ -26,6 +28,13 @@ public static class DependencyInjection
             configuration.GetSection(nameof(ConnectionStringsOptions)).Bind(options));
         services.Configure<RootFolderOptions>(options =>
             configuration.GetSection(nameof(RootFolderOptions)).Bind(options));
+
+        return services;
+    }
+
+    private static IServiceCollection ConfigureServices(this IServiceCollection services)
+    {
+        services.AddTransient<IResourceFactory, ResourceFactory>();
 
         return services;
     }
@@ -50,7 +59,7 @@ public static class DependencyInjection
 
         services.AddScoped<IAppDbContext>(s => s.GetRequiredService<AppDbContext>());
         services.AddScoped<ITransactionExecutor>(s => s.GetRequiredService<AppDbContext>());
-        
+
         return services;
     }
 }

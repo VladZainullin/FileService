@@ -8,10 +8,6 @@ public class Folder : Resource
 
     public Folder(string title, Resource parent) : base(title, parent)
     {
-        if (!Directory.Exists(Route))
-        {
-            Directory.CreateDirectory(Route);
-        }
     }
 
     public IReadOnlyCollection<Resource> Children { get; private set; } = new List<Resource>();
