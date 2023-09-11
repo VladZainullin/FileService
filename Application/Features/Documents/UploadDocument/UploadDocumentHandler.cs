@@ -18,13 +18,18 @@ public sealed class UploadDocumentHandler : IRequestHandler<UploadDocumentComman
         UploadDocumentCommand request,
         CancellationToken cancellationToken)
     {
-        var parent = await _context.Resources
-            .Where(r => r.Id == request.Dto.ParentId)
-            .SingleAsync(cancellationToken);
+        var parent = await GetResourceAsync(request, cancellationToken);
 
         var document = await Document.CreateInstance(request.Dto.File, parent);
 
         await _context.Resources.AddAsync(document, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    private Task<Resource> GetResourceAsync(UploadDocumentCommand request, CancellationToken cancellationToken)
+    {
+        return _context.Resources
+            .Where(r => r.Id == request.Dto.ParentId)
+            .SingleAsync(cancellationToken);
     }
 }
